@@ -35,18 +35,22 @@ class _SearchRestaurantScreenState extends State<SearchRestaurantScreen> {
                 decoration: BoxDecoration(
                     color: Colors.grey.shade100,
                     borderRadius: const BorderRadius.all(Radius.circular(20))),
-                child: TextField(
-                  controller: _textController,
-                  onChanged: (value) {
-                    Provider.of<SearchRestaurantProvider>(context,
-                            listen: false)
-                        .changeSearchValue(value);
-                  },
-                  decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'Search restaurant',
-                      prefixIcon: Icon(Icons.search),
-                      prefixIconColor: Colors.deepPurple),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: TextField(
+                    controller: _textController,
+                    decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Search restaurant',
+                        suffixIcon: GestureDetector(
+                            onTap: () {
+                              Provider.of<SearchRestaurantProvider>(context,
+                                      listen: false)
+                                  .changeSearchValue(_textController.text);
+                            },
+                            child: Icon(Icons.search)),
+                        suffixIconColor: Colors.deepPurple),
+                  ),
                 ),
               ),
               const SizedBox(
