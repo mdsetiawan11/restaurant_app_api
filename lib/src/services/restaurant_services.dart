@@ -43,6 +43,24 @@ class RestaurantServices {
     return null;
   }
 
+  Future<RestaurantListModel?> searchRestaurant(query) async {
+    try {
+      final response = await http.get(Uri.parse('${apiUrl}search?q=$query'));
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        print(data);
+        return RestaurantListModel.fromJson(data);
+      } else {
+        print("error");
+      }
+    } on SocketException catch (e) {
+      print(e.toString());
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
   Future<http.Response?> postreview(AddReviewModel data) async {
     http.Response? response;
     try {
@@ -51,6 +69,7 @@ class RestaurantServices {
             HttpHeaders.contentTypeHeader: "application/json",
           },
           body: jsonEncode(data.toJson()));
+      print(response);
     } catch (e) {
       print(e.toString());
     }

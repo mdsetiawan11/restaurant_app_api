@@ -15,25 +15,8 @@ class _RestaurantListScreenState extends State<RestaurantListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: const Row(
-          children: [
-            Text('Restaurant'),
-            SizedBox(
-              width: 5,
-            ),
-            Text(
-              'App',
-              style: TextStyle(
-                color: Colors.deepPurple,
-              ),
-            )
-          ],
-        ),
-      ),
       body: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: SizedBox(
           child: Consumer<RestaurantProvider>(builder: (context, state, _) {
             if (state.state == ResultState.loading) {
@@ -41,18 +24,40 @@ class _RestaurantListScreenState extends State<RestaurantListScreen> {
                 child: CircularProgressIndicator(),
               );
             } else if (state.state == ResultState.hasData) {
-              return ListView.builder(
-                  itemCount: state.result.restaurants.length,
-                  itemBuilder: ((context, index) {
-                    var restaurant = state.result.restaurants[index];
-                    return GestureDetector(
-                        onTap: () {
-                          context.pushNamed('detail', pathParameters: {
-                            "id": restaurant.id,
-                          });
-                        },
-                        child: RestaurantCard(restaurant: restaurant));
-                  }));
+              return CustomScrollView(
+                slivers: [
+                  const SliverAppBar(
+                    floating: true,
+                    title: Row(
+                      children: [
+                        Text('Restaurant'),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          'App',
+                          style: TextStyle(
+                            color: Colors.deepPurple,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  SliverList.builder(
+                    itemCount: state.result.restaurants.length,
+                    itemBuilder: ((context, index) {
+                      var restaurant = state.result.restaurants[index];
+                      return GestureDetector(
+                          onTap: () {
+                            context.pushNamed('detail', pathParameters: {
+                              "id": restaurant.id,
+                            });
+                          },
+                          child: RestaurantCard(restaurant: restaurant));
+                    }),
+                  )
+                ],
+              );
             } else if (state.state == ResultState.noData) {
               return Center(
                 child: Material(
