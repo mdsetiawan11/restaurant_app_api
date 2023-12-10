@@ -20,15 +20,7 @@ class _SearchRestaurantScreenState extends State<SearchRestaurantScreen> {
   }
 
   @override
-  void initState() {
-    _textController.clear();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final provider =
-        Provider.of<SearchRestaurantProvider>(context, listen: false);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(15),
@@ -45,8 +37,9 @@ class _SearchRestaurantScreenState extends State<SearchRestaurantScreen> {
               child: TextField(
                 controller: _textController,
                 onChanged: (value) {
-                  provider.searchRestaurant(value);
-                  _textController.clear;
+                  Provider.of<SearchRestaurantProvider>(context, listen: false)
+                      .changeSearchValue(value);
+
                   print(value);
                 },
                 decoration: const InputDecoration(
@@ -58,23 +51,11 @@ class _SearchRestaurantScreenState extends State<SearchRestaurantScreen> {
             ),
             SizedBox(
               child: Consumer<SearchRestaurantProvider>(
-                builder: (context, state, _) {
+                builder: (context, state, child) {
                   if (state.state == ResultState.hasData) {
-                    ListView.builder(
-                      itemCount: state.result.restaurants.length,
-                      itemBuilder: ((context, index) {
-                        var restaurant = state.result.restaurants[index];
-                        return GestureDetector(
-                            onTap: () {
-                              context.pushNamed('detail', pathParameters: {
-                                "id": restaurant.id,
-                              });
-                            },
-                            child: RestaurantCard(restaurant: restaurant));
-                      }),
-                    );
+                    print(state.result);
                   }
-                  return const SizedBox();
+                  return SizedBox();
                 },
               ),
             )

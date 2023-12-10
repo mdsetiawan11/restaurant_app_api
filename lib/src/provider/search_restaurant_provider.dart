@@ -11,8 +11,17 @@ enum ResultState {
 
 class SearchRestaurantProvider extends ChangeNotifier {
   final RestaurantServices restaurantServices;
+  String _value = '';
 
-  SearchRestaurantProvider({required this.restaurantServices});
+  void changeSearchValue(String value) {
+    _value = value;
+    searchRestaurant(_value);
+    notifyListeners();
+  }
+
+  SearchRestaurantProvider({required this.restaurantServices}) {
+    searchRestaurant(_value);
+  }
 
   late RestaurantListModel _restaurantResult;
   late ResultState _state;
