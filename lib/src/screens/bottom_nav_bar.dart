@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_app_api/src/provider/restaurant_provider.dart';
+import 'package:restaurant_app_api/src/provider/search_restaurant_provider.dart';
 import 'package:restaurant_app_api/src/screens/restaurant_list.dart';
+import 'package:restaurant_app_api/src/screens/search_restaurant.dart';
 import 'package:restaurant_app_api/src/services/restaurant_services.dart';
 import 'package:sliding_clipped_nav_bar/sliding_clipped_nav_bar.dart';
 
@@ -50,6 +52,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
             title: 'Restaurant',
           ),
           BarItem(
+            icon: Icons.search,
+            title: 'Search',
+          ),
+          BarItem(
             icon: Icons.info,
             title: 'Info',
           ),
@@ -64,6 +70,11 @@ List<Widget> _pages = <Widget>[
   ChangeNotifierProvider<RestaurantProvider>(
     create: (_) => RestaurantProvider(restaurantServices: RestaurantServices()),
     child: const RestaurantListScreen(),
+  ),
+  ChangeNotifierProvider<SearchRestaurantProvider>(
+    create: (_) =>
+        SearchRestaurantProvider(restaurantServices: RestaurantServices()),
+    child: const SearchRestaurantScreen(),
   ),
   const Text('b')
 ];

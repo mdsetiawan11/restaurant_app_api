@@ -17,16 +17,6 @@ class _RestaurantListScreenState extends State<RestaurantListScreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        actions: const [
-          Icon(
-            Icons.search,
-            size: 30,
-            color: Colors.deepPurple,
-          ),
-          SizedBox(
-            width: 15,
-          )
-        ],
         title: const Row(
           children: [
             Text('Restaurant'),
@@ -43,7 +33,7 @@ class _RestaurantListScreenState extends State<RestaurantListScreen> {
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: SizedBox(
           child: Consumer<RestaurantProvider>(builder: (context, state, _) {
             if (state.state == ResultState.loading) {
