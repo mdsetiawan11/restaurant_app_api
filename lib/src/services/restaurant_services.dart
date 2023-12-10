@@ -6,6 +6,7 @@ import 'package:restaurant_app_api/src/common/constant.dart';
 import 'package:restaurant_app_api/src/models/add_review.dart';
 import 'package:restaurant_app_api/src/models/restaurant_detail_model.dart';
 import 'package:restaurant_app_api/src/models/restaurant_list_model.dart';
+import 'package:restaurant_app_api/src/models/restaurant_searched_model.dart';
 
 class RestaurantServices {
   Future<RestaurantListModel?> getRestaurantList() async {
@@ -43,13 +44,13 @@ class RestaurantServices {
     return null;
   }
 
-  Future<RestaurantListModel?> searchRestaurant(query) async {
+  Future<RestaurantSearchedModel?> searchRestaurant(query) async {
     try {
       final response = await http.get(Uri.parse('${apiUrl}search?q=$query'));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        return RestaurantListModel.fromJson(data);
-      } else {}
+        return RestaurantSearchedModel.fromJson(data);
+      }
     } on SocketException catch (e) {
       print(e.toString());
     } catch (e) {

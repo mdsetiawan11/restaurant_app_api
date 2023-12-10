@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:restaurant_app_api/src/models/restaurant_list_model.dart';
+import 'package:restaurant_app_api/src/models/restaurant_searched_model.dart';
 import 'package:restaurant_app_api/src/services/restaurant_services.dart';
 
 enum ResultState {
@@ -23,12 +23,12 @@ class SearchRestaurantProvider extends ChangeNotifier {
     searchRestaurant(_value);
   }
 
-  late RestaurantListModel _restaurantResult;
+  late RestaurantSearchedModel _restaurantResult;
   late ResultState _state;
 
   String _message = '';
   String get message => _message;
-  RestaurantListModel get result => _restaurantResult;
+  RestaurantSearchedModel get result => _restaurantResult;
 
   ResultState get state => _state;
 
@@ -36,6 +36,7 @@ class SearchRestaurantProvider extends ChangeNotifier {
     try {
       _state = ResultState.loading;
       notifyListeners();
+      print(value);
       final restaurantLists = await restaurantServices.searchRestaurant(value);
       if (restaurantLists!.restaurants.isEmpty) {
         _state = ResultState.noData;
@@ -44,7 +45,7 @@ class SearchRestaurantProvider extends ChangeNotifier {
       } else {
         _state = ResultState.hasData;
         notifyListeners();
-        print(restaurantLists);
+
         return _restaurantResult = restaurantLists;
       }
     } catch (e) {
