@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_app_api/src/provider/restaurant_provider.dart';
+import 'package:restaurant_app_api/src/screens/info.dart';
 import 'package:restaurant_app_api/src/screens/restaurant_list.dart';
 import 'package:restaurant_app_api/src/screens/search_restaurant.dart';
 import 'package:restaurant_app_api/src/services/restaurant_services.dart';
@@ -71,5 +72,5 @@ List<Widget> _pages = <Widget>[
     child: const RestaurantListScreen(),
   ),
   const SearchRestaurantScreen(),
-  const Text('b')
+  const InfoScreen(),
 ];

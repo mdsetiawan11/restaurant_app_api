@@ -16,11 +16,7 @@ class RestaurantServices {
         final data = json.decode(response.body);
         return RestaurantListModel.fromJson(data);
       } else {}
-    } on SocketException catch (e) {
-      print(e.toString());
-    } catch (e) {
-      print(e.toString());
-    }
+    } catch (e) {}
     return null;
   }
 
@@ -29,16 +25,10 @@ class RestaurantServices {
       final response = await http.get(Uri.parse('${apiUrl}detail/$id'));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        print(data);
         return RestaurantDetailModel.fromJson(data);
-      } else {
-        print("error");
-      }
-    } on SocketException catch (e) {
-      print(e.toString());
-    } catch (e) {
-      print(e.toString());
-    }
+      } else {}
+    } on SocketException {
+    } catch (e) {}
     return null;
   }
 
@@ -49,11 +39,8 @@ class RestaurantServices {
         final data = json.decode(response.body);
         return RestaurantSearchedModel.fromJson(data);
       }
-    } on SocketException catch (e) {
-      print(e.toString());
-    } catch (e) {
-      print(e.toString());
-    }
+    } on SocketException {
+    } catch (e) {}
     return null;
   }
 
@@ -65,10 +52,7 @@ class RestaurantServices {
             HttpHeaders.contentTypeHeader: "application/json",
           },
           body: jsonEncode(data.toJson()));
-      print(response);
-    } catch (e) {
-      print(e.toString());
-    }
+    } catch (e) {}
     return response;
   }
 }

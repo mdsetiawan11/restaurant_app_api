@@ -1,54 +1,41 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:restaurant_app_api/src/models/restaurant_searched_model.dart';
 import 'package:restaurant_app_api/src/services/restaurant_services.dart';
 
-enum ResultState {
-  loading,
-  noData,
-  hasData,
-  error,
-}
-
-class SearchRestaurantProvider extends ChangeNotifier {
-  final RestaurantServices restaurantServices;
-  String _value = '';
-
-  void changeSearchValue(String value) {
-    _value = value;
-    searchRestaurant(_value);
-    notifyListeners();
-  }
-
-  SearchRestaurantProvider({required this.restaurantServices}) {
-    searchRestaurant(_value);
-  }
-
-  late RestaurantSearchedModel _restaurantResult;
-  late ResultState _state;
-
-  String _message = '';
+class SearchRestaurantProv extends ChangeNotifier {
+  RestaurantServices restaurantServices = RestaurantServices();
+  late RestaurantSearchedModel _restaurantResult =
+      RestaurantSearchedModel(error: false, founded: 0, restaurants: []);
+  late bool _isLoading = false;
+  late String _message = '';
   String get message => _message;
+  bool get isLoading => _isLoading;
   RestaurantSearchedModel get result => _restaurantResult;
 
-  ResultState get state => _state;
-
-  Future searchRestaurant(String value) async {
+  Future<dynamic> searchRestaurant(String value) async {
     try {
-      _state = ResultState.loading;
+      _restaurantResult =
+          RestaurantSearchedModel(error: false, founded: 0, restaurants: []);
+      _isLoading = true;
       notifyListeners();
       final restaurantLists = await restaurantServices.searchRestaurant(value);
       if (restaurantLists!.restaurants.isEmpty) {
-        _state = ResultState.noData;
+        _isLoading = false;
         notifyListeners();
-        return _message = 'Empty Data';
+        return _message = 'Restaurant or Menu not found';
       } else {
-        _state = ResultState.hasData;
         notifyListeners();
-
+        _isLoading = false;
         return _restaurantResult = restaurantLists;
       }
+    } on SocketException {
+      _isLoading = false;
+      notifyListeners();
+      return _message = 'Check Your Connection';
     } catch (e) {
-      _state = ResultState.error;
+      _isLoading = false;
       notifyListeners();
       return _message = '$e';
     }
