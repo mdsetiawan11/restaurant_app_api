@@ -1,9 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:restaurant_app_api/src/common/constant.dart';
-import 'package:restaurant_app_api/src/models/add_review.dart';
 import 'package:restaurant_app_api/src/models/restaurant_detail_model.dart';
 import 'package:restaurant_app_api/src/models/restaurant_list_model.dart';
 import 'package:restaurant_app_api/src/models/restaurant_searched_model.dart';
@@ -31,15 +29,5 @@ class RestaurantServices {
       final data = json.decode(response.body);
       return RestaurantSearchedModel.fromJson(data);
     }
-  }
-
-  Future<http.Response?> postreview(AddReviewModel data) async {
-    http.Response? response;
-    response = await http.post(Uri.parse('${apiUrl}review'),
-        headers: {
-          HttpHeaders.contentTypeHeader: "application/json",
-        },
-        body: jsonEncode(data.toJson()));
-    return response;
   }
 }

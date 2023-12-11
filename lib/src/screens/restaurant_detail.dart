@@ -17,14 +17,6 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.deepPurple.withOpacity(0.7),
-        onPressed: () {},
-        child: const Icon(
-          Icons.reviews,
-          color: Colors.white,
-        ),
-      ),
       body: SizedBox(
         child: Consumer<RestaurantDetailProvider>(
           builder: (context, state, _) {
