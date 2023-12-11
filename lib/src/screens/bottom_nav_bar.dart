@@ -71,10 +71,7 @@ List<Widget> _pages = <Widget>[
     create: (_) => RestaurantProvider(restaurantServices: RestaurantServices()),
     child: const RestaurantListScreen(),
   ),
-  ChangeNotifierProvider<SearchRestaurantProvider>(
-    create: (_) =>
-        SearchRestaurantProvider(restaurantServices: RestaurantServices()),
-    child: const SearchRestaurantScreen(),
-  ),
+  const SearchRestaurantScreen(),
+
   const Text('b')
 ];

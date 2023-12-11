@@ -32,7 +32,7 @@ class SearchRestaurantProvider extends ChangeNotifier {
 
   ResultState get state => _state;
 
-  Future<dynamic> searchRestaurant(String value) async {
+  Future searchRestaurant(String value) async {
     try {
       _state = ResultState.loading;
       notifyListeners();
