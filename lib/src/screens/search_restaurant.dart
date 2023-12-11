@@ -22,80 +22,82 @@ class _SearchRestaurantScreenState extends State<SearchRestaurantScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer<SearchRestaurantProvider>(
-        builder: (context, state, _) {
-          return Padding(
-            padding: const EdgeInsets.all(15),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                        color: Colors.grey.shade100,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(20))),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: TextField(
-                        controller: _textController,
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'Search restaurant',
-                            suffixIcon: GestureDetector(
-                                onTap: () {
-                                  Provider.of<SearchRestaurantProvider>(context,
-                                          listen: false)
-                                      .changeSearchValue(_textController.text);
-                                },
-                                child: Icon(Icons.search)),
-                            suffixIconColor: Colors.deepPurple),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  state.state == ResultState.hasData
-                      ? SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.height * 0.8,
-                          child: ListView.builder(
-                            itemCount: state.result.restaurants.length,
-                            itemBuilder: ((context, index) {
-                              var restaurant = state.result.restaurants[index];
-                              return GestureDetector(
-                                  onTap: () {
-                                    context
-                                        .pushNamed('detail', pathParameters: {
-                                      "id": restaurant.id,
-                                    });
-                                  },
-                                  child: RestaurantSearchedCard(
-                                      restaurant: restaurant));
-                            }),
-                          ),
-                        )
-                      : state.state == ResultState.noData
-                          ? Center(
-                              child: Material(child: Text(state.message)),
-                            )
-                          : state.state == ResultState.error
-                              ? Center(
-                                  child: Material(
-                                    child: Text(state.message),
-                                  ),
-                                )
-                              : Center(child: CircularProgressIndicator())
-                ],
+        body: Padding(
+      padding: const EdgeInsets.all(15),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 15,
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                  borderRadius: const BorderRadius.all(Radius.circular(20))),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: TextField(
+                  controller: _textController,
+                  decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'Search restaurant',
+                      suffixIcon: GestureDetector(
+                          onTap: () {
+                            Provider.of<SearchRestaurantProvider>(context,
+                                    listen: false)
+                                .changeSearchValue(_textController.text);
+                          },
+                          child: const Icon(Icons.search)),
+                      suffixIconColor: Colors.deepPurple),
+                ),
               ),
             ),
-          );
-        },
+            const SizedBox(
+              height: 10,
+            ),
+            SizedBox(
+              child: Consumer<SearchRestaurantProvider>(
+                builder: (context, state, child) {
+                  if (state.state == ResultState.hasData) {
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height * 0.8,
+                      child: ListView.builder(
+                        itemCount: state.result.restaurants.length,
+                        itemBuilder: ((context, index) {
+                          var restaurant = state.result.restaurants[index];
+                          return GestureDetector(
+                              onTap: () {
+                                context.pushNamed('detail', pathParameters: {
+                                  "id": restaurant.id,
+                                });
+                              },
+                              child: RestaurantSearchedCard(
+                                  restaurant: restaurant));
+                        }),
+                      ),
+                    );
+                  } else if (state.state == ResultState.noData) {
+                    Center(
+                      child: Material(child: Text(state.message)),
+                    );
+                  } else if (state.state == ResultState.error) {
+                    Center(
+                      child: Material(
+                        child: Text(state.message),
+                      ),
+                    );
+                  } else if (state.state == ResultState.loading) {
+                    const Center(child: CircularProgressIndicator());
+                  }
+                  return const SizedBox();
+                },
+              ),
+            ),
+          ],
+        ),
       ),
-    );
+    ));
   }
 }
