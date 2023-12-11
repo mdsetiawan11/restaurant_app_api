@@ -36,7 +36,6 @@ class SearchRestaurantProvider extends ChangeNotifier {
     try {
       _state = ResultState.loading;
       notifyListeners();
-      print(value);
       final restaurantLists = await restaurantServices.searchRestaurant(value);
       if (restaurantLists!.restaurants.isEmpty) {
         _state = ResultState.noData;

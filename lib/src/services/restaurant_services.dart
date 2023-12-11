@@ -15,9 +15,7 @@ class RestaurantServices {
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         return RestaurantListModel.fromJson(data);
-      } else {
-        print("error");
-      }
+      } else {}
     } on SocketException catch (e) {
       print(e.toString());
     } catch (e) {
