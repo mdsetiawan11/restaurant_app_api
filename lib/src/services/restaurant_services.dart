@@ -9,50 +9,37 @@ import 'package:restaurant_app_api/src/models/restaurant_list_model.dart';
 import 'package:restaurant_app_api/src/models/restaurant_searched_model.dart';
 
 class RestaurantServices {
-  Future<RestaurantListModel?> getRestaurantList() async {
-    try {
-      final response = await http.get(Uri.parse('${apiUrl}list'));
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        return RestaurantListModel.fromJson(data);
-      } else {}
-    } catch (e) {}
-    return null;
+  Future getRestaurantList() async {
+    final response = await http.get(Uri.parse('${apiUrl}list'));
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      return RestaurantListModel.fromJson(data);
+    }
   }
 
-  Future<RestaurantDetailModel?> getRestaurantDetail(id) async {
-    try {
-      final response = await http.get(Uri.parse('${apiUrl}detail/$id'));
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        return RestaurantDetailModel.fromJson(data);
-      } else {}
-    } on SocketException {
-    } catch (e) {}
-    return null;
+  Future getRestaurantDetail(id) async {
+    final response = await http.get(Uri.parse('${apiUrl}detail/$id'));
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      return RestaurantDetailModel.fromJson(data);
+    }
   }
 
-  Future<RestaurantSearchedModel?> searchRestaurant(query) async {
-    try {
-      final response = await http.get(Uri.parse('${apiUrl}search?q=$query'));
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        return RestaurantSearchedModel.fromJson(data);
-      }
-    } on SocketException {
-    } catch (e) {}
-    return null;
+  Future searchRestaurant(query) async {
+    final response = await http.get(Uri.parse('${apiUrl}search?q=$query'));
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      return RestaurantSearchedModel.fromJson(data);
+    }
   }
 
   Future<http.Response?> postreview(AddReviewModel data) async {
     http.Response? response;
-    try {
-      response = await http.post(Uri.parse('${apiUrl}review'),
-          headers: {
-            HttpHeaders.contentTypeHeader: "application/json",
-          },
-          body: jsonEncode(data.toJson()));
-    } catch (e) {}
+    response = await http.post(Uri.parse('${apiUrl}review'),
+        headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+        },
+        body: jsonEncode(data.toJson()));
     return response;
   }
 }

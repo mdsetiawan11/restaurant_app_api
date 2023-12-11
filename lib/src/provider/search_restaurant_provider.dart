@@ -17,7 +17,7 @@ class SearchRestaurantProv extends ChangeNotifier {
   Future<dynamic> searchRestaurant(String value) async {
     try {
       _restaurantResult =
-          RestaurantSearchedModel(error: false, founded: 0, restaurants: []);
+          RestaurantSearchedModel(error: true, founded: 0, restaurants: []);
       _isLoading = true;
       notifyListeners();
       final restaurantLists = await restaurantServices.searchRestaurant(value);
@@ -30,14 +30,16 @@ class SearchRestaurantProv extends ChangeNotifier {
         _isLoading = false;
         return _restaurantResult = restaurantLists;
       }
-    } on SocketException {
-      _isLoading = false;
-      notifyListeners();
-      return _message = 'Check Your Connection';
     } catch (e) {
-      _isLoading = false;
-      notifyListeners();
-      return _message = '$e';
+      if (e is SocketException) {
+        _isLoading = false;
+        notifyListeners();
+        return _message = 'No Internet Connection';
+      } else {
+        _isLoading = false;
+        notifyListeners();
+        return _message = 'Failed to Load Data';
+      }
     }
   }
 }

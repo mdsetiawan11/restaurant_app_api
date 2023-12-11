@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:restaurant_app_api/src/models/restaurant_list_model.dart';
 import 'package:restaurant_app_api/src/services/restaurant_services.dart';
@@ -40,9 +42,15 @@ class RestaurantProvider extends ChangeNotifier {
         return _restaurantResult = restaurantList;
       }
     } catch (e) {
-      _state = ResultState.error;
-      notifyListeners();
-      return _message = '$e';
+      if (e is SocketException) {
+        _state = ResultState.error;
+        notifyListeners();
+        return _message = 'No Internet Connection';
+      } else {
+        _state = ResultState.error;
+        notifyListeners();
+        return _message = 'Failed to Load Data';
+      }
     }
   }
 }
